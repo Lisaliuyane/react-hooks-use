@@ -95,6 +95,13 @@ module.exports = function(webpackEnv) {
 
     // common function to get style loaders
     const getStyleLoaders = (cssOptions, lessOptions, preProcessor) => {
+        lessOptions = {
+            modifyVars: {
+                'primary-color': '#1DA57A',
+                'link-color': '#1DA57A',
+                'border-radius-base': '2px',
+            }
+        }
         const loaders = [
             isEnvDevelopment && require.resolve('style-loader'),
             isEnvProduction && {
@@ -378,6 +385,7 @@ module.exports = function(webpackEnv) {
                         },
                         // Process application JS with Babel.
                         // The preset includes JSX, Flow, TypeScript, and some ESnext features.
+                        // ['import', { libraryName: 'antd', style: 'css' }],
                         {
                             test: /\.(js|mjs|jsx|ts|tsx)$/,
                             include: paths.appSrc,
@@ -396,6 +404,7 @@ module.exports = function(webpackEnv) {
                                 ],
 
                                 plugins: [
+                                    ['import', { libraryName: 'antd', style: 'css' }],
                                     [
                                         require.resolve('babel-plugin-named-asset-import'),
                                         {
