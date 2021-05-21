@@ -24,6 +24,7 @@ const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin');
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const theme = require("./antdTheme");
 
 const postcssNormalize = require('postcss-normalize');
 
@@ -94,14 +95,7 @@ module.exports = function(webpackEnv) {
     const shouldUseReactRefresh = env.raw.FAST_REFRESH;
 
     // common function to get style loaders
-    const getStyleLoaders = (cssOptions, lessOptions, preProcessor) => {
-        lessOptions = {
-            modifyVars: {
-                'primary-color': '#1DA57A',
-                'link-color': '#1DA57A',
-                'border-radius-base': '2px',
-            }
-        }
+    const getStyleLoaders = (cssOptions, preProcessor) => {
         const loaders = [
             isEnvDevelopment && require.resolve('style-loader'),
             isEnvProduction && {
@@ -114,10 +108,13 @@ module.exports = function(webpackEnv) {
                 loader: require.resolve('css-loader'),
                 options: cssOptions,
             },
-            {
-                loader: require.resolve('less-loader'),
-                options: lessOptions,
-            },
+            // {
+            //     loader: require.resolve('less-loader'),
+            //     options: {
+            //         modifyVars: theme,
+            //         javascriptEnabled: true,
+            //     },
+            // },
             {
                 // Options for PostCSS as we reference these options twice
                 // Adds vendor prefixing based on your specified browser support in
@@ -157,6 +154,25 @@ module.exports = function(webpackEnv) {
                     sourceMap: true,
                 },
             });
+            if (preProcessor && preProcessor === "less-loader") {
+                loaders.push({
+                    loader: require.resolve('resolve-url-loader'),
+                    options: {
+                        sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
+                    },
+                }, {
+                    loader: require.resolve(preProcessor),
+                    options: {
+                        sourceMap: true,
+                        javascriptEnabled: true,
+                        modifyVars: {
+                            'primary-color': '#1DA57A',
+                            'link-color': '#1DA57A',
+                            'border-radius-base': '2px',
+                        }
+                    }
+                })
+            }
         }
         return loaders;
     };
@@ -404,7 +420,7 @@ module.exports = function(webpackEnv) {
                                 ],
 
                                 plugins: [
-                                    ['import', { libraryName: 'antd', style: 'css' }],
+                                    // ['import', { libraryName: 'antd', style: 'css' }],
                                     [
                                         require.resolve('babel-plugin-named-asset-import'),
                                         {

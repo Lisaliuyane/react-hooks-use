@@ -162,6 +162,17 @@
     "babel": {
         "presets": [
             "react-app"
+        ],
+        "plugins": [
+            ["import", {
+                "libraryName": "antd",
+                "libraryDirectory": "lib",
+                "style": true
+            }]
         ]
+    },
+    "devDependencies": {
+        "@types/react-redux": "^7.1.16",
+        "@types/react-router-dom": "^5.1.7"
     }
 }

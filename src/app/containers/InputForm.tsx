@@ -20,7 +20,7 @@ const InputForm = ({
     <div>
       <label>
         {label}:
-        <Input {...otherProps} type={type} />
+        <Input {...otherProps} type={type} className="w180" />
       </label>
       {error && <p style={{ color: "red" }}>{helperText}</p>}
     </div>

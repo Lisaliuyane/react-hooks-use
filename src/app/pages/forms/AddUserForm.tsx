@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button } from "antd";
 import "./AddUserForm.less";
 
 const AddUserForm = (props: any) => {
@@ -39,7 +40,8 @@ const AddUserForm = (props: any) => {
         />
       </p>
       <div className="add-btn">
-        <button>Add new user</button>
+        <Button type="primary">Add new user</Button>
+        {/* <button>Add new user</button> */}
       </div>
     </form>
   );
